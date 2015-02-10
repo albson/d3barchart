@@ -4,6 +4,10 @@ for (var i = 0; i< 50; i++) {
 	bardata.push(Math.round(Math.random()* 30)+10)
 }
 
+bardata.sort(function compareNumbers(a,b) {
+	return a-b;
+});
+
 
 var height = 400,
 		width = 600,
@@ -36,6 +40,7 @@ var tooltip = d3.select('body').append('div')
 var myChart = d3.select('#chart').append('svg')
 		.attr('width', width)
 		.attr('height', height)
+		.append('g')
 		.style('background', '#C9D7D6')
 		.selectAll('rect').data(bardata)
 		.enter().append('rect')
@@ -89,6 +94,23 @@ myChart.transition()
 		.ease('elastic')
 
 
+var vGuideScale = d3.scale.linear()
+		.domain([0, d3.max(bardata)])
+		.range([height, 0])
+
+var vAxis = d3.svg.axis()
+		.scale(vGuideScale)
+		.orient('left')
+		.ticks(10)
+
+
+var vGuide = d3.select('svg').append('g')
+	vAxis(vGuide)
+	vGuide.attr('transform', 'translate(35, 0)')
+	vGuide.selectAll('path')
+				.style({ fill: 'none', stroke: "#000"})
+	vGuide.selectAll('line')
+				.style({ stroke: "#000"})			
 
 
 
