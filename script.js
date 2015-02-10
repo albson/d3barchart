@@ -1,4 +1,4 @@
-var bardata = [20, 30, 70, 15, 10, 80, 20, 15, 40, 90,20, 15, 40, 125];
+var bardata = [20, 30, 40, 15, 10, 25, 20, 15, 40, 90,20, 15, 40, 125];
 
 for (var i = 0; i< 50; i++) {
 	bardata.push(Math.random()* 30)
@@ -27,7 +27,7 @@ var xScale = d3.scale.ordinal()
 
 
 
-d3.select('#chart').append('svg')
+var myChart = d3.select('#chart').append('svg')
 		.attr('width', width)
 		.attr('height', height)
 		.style('background', '#C9D7D6')
@@ -37,15 +37,13 @@ d3.select('#chart').append('svg')
 					return colors(i);
 				})
 				.attr('width', xScale.rangeBand())
-				.attr('height', function(d) {
-					return yScale(d);
-				})
+
 				.attr('x', function(d,i) {
 					return xScale(i);
 				})
-				.attr('y', function(d) {
-					return height - yScale(d);
-				})
+				.attr('height', 0)
+				.attr('y', height)
+
 
 		.on('mouseover', function(d) {
 			tempColor = this.style.fill;
@@ -59,5 +57,26 @@ d3.select('#chart').append('svg')
 				.style('opacity', 1)
 				.style('fill', tempColor)
 		})
+
+myChart.transition()
+		.attr('height', function(d) {
+			return yScale(d);
+		})
+
+		.attr('y', function(d) {
+			return height - yScale(d);
+		})
+
+		.delay(function(d, i) {
+			return i * 20;
+		})
+
+		.duration(1000)
+		.ease('elastic')
+
+
+
+
+
 
 
